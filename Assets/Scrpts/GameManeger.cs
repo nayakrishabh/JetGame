@@ -42,8 +42,7 @@ public class GameManeger : MonoBehaviour
     }
 
     void getposroc() {
-        //Getting the starting and End point of the Rocket and Dusre
-        //kaGola
+        //Getting the starting and End point of the Rocket and DusrekaGola
         starpointroc = new Vector3(rocketpos.x, rocketpos.y, rocketpos.z);
         endpointroc = new Vector3(rocketpos.x, starpointroc.y + 2.5f, rocketpos.z);
 
