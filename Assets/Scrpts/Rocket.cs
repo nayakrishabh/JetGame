@@ -29,11 +29,11 @@ public class Rocket : MonoBehaviour
 
     private void Update() {
 
-        //if (GameManeger.Instance.getinMotion()) {
-        //    multiplier += Time.deltaTime * multiplierRate;
-        //    mulitiplerText.text = multiplier.ToString("F2") + "x";
-        //    startingRoc(GameManeger.Instance.getT());
-        //}
+        if (GameManeger.instance.getInmotion()) {
+            multiplier += Time.deltaTime * multiplierRate;
+            mulitiplerText.text = multiplier.ToString("F2") + "x";
+            startingRoc(GameManeger.instance.getT());
+        }
     }
     public void startingRoc(float t) {
         Debug.Log(t);
@@ -44,5 +44,10 @@ public class Rocket : MonoBehaviour
             transform.position.z
             );
     }
-
+    public void crashJet() {
+        gameObject.SetActive(false);
+    }
+    public float getMultiplier() {
+        return multiplier;
+    }
 }

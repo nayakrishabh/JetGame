@@ -1,70 +1,90 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Security;
+using TMPro;
 using UnityEngine;
 
 public class GameManeger : MonoBehaviour
 {
+    public static GameManeger instance;
     [SerializeField] private GameObject rocket;
     [SerializeField] private GameObject dusreKaGola;
+    [SerializeField] private GameObject timerPanel;
     [SerializeField] private float lerpDuration;
+    [SerializeField] private TextMeshProUGUI timerText;
 
-    private Vector3 rocketpos;
     private Vector3 dusreKaGolapos;
 
-    private Vector2 starpointroc;
-    private Vector2 endpointroc;
     private Vector2 starpointdkg;
     private Vector2 endpointdkg;
-    private Vector2 uvpos; 
+    private Vector2 uvpos = new Vector2(0f,0.2f);
 
     private float elapsedTime = 0f;
     private float remainingTime = 5f;
+    private float t;
+    private float selectedMultiplier;
+
+    private bool inMotion = false;
+    private bool inSession = false;
 
     private void Awake() {
-        rocketpos = rocket.transform.position;
+        if (instance == null) {
+            instance = this;
+        }
         dusreKaGolapos = dusreKaGola.transform.position;
-        uvpos = new Vector2(0f,0.2f);
+        timerPanel.SetActive(true);
+        getposdkg();
     }
     void Start()
     {
-        getposroc();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+        remainingTime -= Time.deltaTime;
+        
+        
+        int time = Mathf.FloorToInt(remainingTime);
+        timerText.text = string.Format("Round Starts in: \n{0}",time);
+        if (time <= 0) {
+            timerPanel.SetActive(false);
+        }
+        if (time <= -1) {
+            startSession();
+        }
+    }
+    private void startSession() {
         elapsedTime += Time.deltaTime;
-        float t = Mathf.Clamp(elapsedTime / lerpDuration, 0, 1);
+        t = Mathf.Clamp(elapsedTime / lerpDuration, 0, 1);
         Scroller.Instance.scrollingLogic(uvpos);
         startingMotion(t);
-
     }
+    private void endSession() {
 
-    void getposroc() {
-        //Getting the starting and End point of the Rocket and DusrekaGola
-        starpointroc = new Vector3(rocketpos.x, rocketpos.y, rocketpos.z);
-        endpointroc = new Vector3(rocketpos.x, starpointroc.y + 2.5f, rocketpos.z);
-
-        starpointdkg = new Vector3(dusreKaGolapos.x, dusreKaGolapos.y, dusreKaGolapos.z);
-        endpointdkg = new Vector3(dusreKaGolapos.x, starpointdkg.y - 2.5f, dusreKaGolapos.z);
     }
     private void startingMotion(float t) {
-        /*
-         For Rocket Movement 
-         */
-        rocket.transform.position = new Vector3(
-            rocketpos.x,
-            Mathf.Lerp(starpointroc.y, endpointroc.y, t),
-            rocketpos.z
-        );
-        /*
-         For DusreKaGola Movement 
-         */
+        inMotion = true;
         dusreKaGola.transform.position = new Vector3(
             dusreKaGolapos.x,
             Mathf.Lerp(starpointdkg.y, endpointdkg.y, t),
             dusreKaGolapos.z
         );
+    }
+    void getposdkg() {
+        //Getting the starting and End point of the DusrekaGola
+        starpointdkg = new Vector3(dusreKaGolapos.x, dusreKaGolapos.y, dusreKaGolapos.z);
+        endpointdkg = new Vector3(dusreKaGolapos.x, starpointdkg.y - 2.5f, dusreKaGolapos.z);
+    }
+    
+    private void selectMultiplier() {
+        selectedMultiplier = Mathf.Round((Random.Range(1.00f, 10.00f)*100f)/100f);
+    }
+    public float getT() {
+        return t;
+    }
+    public bool getInmotion() {
+        return inMotion;
     }
 }

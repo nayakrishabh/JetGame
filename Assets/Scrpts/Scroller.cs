@@ -7,9 +7,6 @@ public class Scroller : MonoBehaviour
 {
     [SerializeField] private RawImage rawImage;
 
-
-    private float x = 0, y = 0.1f;
-
     public static Scroller Instance;
 
     private void Awake() {

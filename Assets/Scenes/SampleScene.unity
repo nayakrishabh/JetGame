@@ -772,7 +772,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rocket: {fileID: 1774449960}
   dusreKaGola: {fileID: 1113373712}
+  timerPanel: {fileID: 909861218}
   lerpDuration: 3
+  timerText: {fileID: 1020196982}
 --- !u!1 &167937570
 GameObject:
   m_ObjectHideFlags: 0
