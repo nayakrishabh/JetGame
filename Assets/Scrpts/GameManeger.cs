@@ -24,6 +24,8 @@ public class GameManeger : MonoBehaviour
     private float t;
     private float selectedMultiplier;
 
+    private int sessionCount = 0;
+
     private bool inMotion = false;
     private bool inSession = false;
 
@@ -37,15 +39,13 @@ public class GameManeger : MonoBehaviour
     }
     void Start()
     {
-        
+        selectMultiplier();
     }
 
     // Update is called once per frame
     void Update()
     {
         remainingTime -= Time.deltaTime;
-        
-        
         int time = Mathf.FloorToInt(remainingTime);
         timerText.text = string.Format("Round Starts in: \n{0}",time);
         if (time <= 0) {
@@ -54,15 +54,23 @@ public class GameManeger : MonoBehaviour
         if (time <= -1) {
             startSession();
         }
+        endSession();
     }
     private void startSession() {
+        inSession = true;
         elapsedTime += Time.deltaTime;
         t = Mathf.Clamp(elapsedTime / lerpDuration, 0, 1);
         Scroller.Instance.scrollingLogic(uvpos);
         startingMotion(t);
     }
     private void endSession() {
-
+        inSession = false;
+        float multiplier = Mathf.Round(Rocket.instance.getMultiplier() * 100f) / 100f;
+        float tolerance = 0.01f;
+        if (Mathf.Abs(multiplier - selectedMultiplier) < tolerance) {
+            Rocket.instance.crashJet();
+            startSession();
+        }
     }
     private void startingMotion(float t) {
         inMotion = true;
@@ -79,7 +87,8 @@ public class GameManeger : MonoBehaviour
     }
     
     private void selectMultiplier() {
-        selectedMultiplier = Mathf.Round((Random.Range(1.00f, 10.00f)*100f)/100f);
+        selectedMultiplier = (Mathf.Round(Random.Range(1.00f, 3.00f) * 100f)/100f);
+        Debug.Log(selectedMultiplier);
     }
     public float getT() {
         return t;

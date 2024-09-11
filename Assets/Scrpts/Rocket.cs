@@ -23,8 +23,6 @@ public class Rocket : MonoBehaviour
         }
         starpointroc = new Vector3(transform.position.x, transform.position.y, transform.position.z);
         endpointroc = new Vector3(transform.position.x, starpointroc.y + 2.5f, transform.position.z);
-        Debug.Log(selfpos.y);
-        Debug.Log(endpointroc.y);
     }
 
     private void Update() {
@@ -36,8 +34,6 @@ public class Rocket : MonoBehaviour
         }
     }
     public void startingRoc(float t) {
-        Debug.Log(t);
-
         transform.position = new Vector3(
             transform.position.x,
             Mathf.Lerp(starpointroc.y, endpointroc.y, t),
@@ -46,6 +42,7 @@ public class Rocket : MonoBehaviour
     }
     public void crashJet() {
         gameObject.SetActive(false);
+        Debug.Log("Rocket is Crashed");
     }
     public float getMultiplier() {
         return multiplier;
