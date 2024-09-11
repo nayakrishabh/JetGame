@@ -46,15 +46,20 @@ public class GameManeger : MonoBehaviour
         roundTimer();
 
         int time = Mathf.FloorToInt(remainingTime);
-        timerText.text = string.Format("Round Starts in: \n{0}", time);
+        timerText.text = $"Round Starts in: \n{time}";
 
         if (time <= 0) {
             timerpanelActivity(false);
         }
-        if (time <= -2) {
+
+        if (time <= -1) {
             startSession();
         }
-        endSession();
+
+        // Handle end of the session
+        if (inSession) {
+            endSession();
+        }
     }
     private void startSession() {
         
