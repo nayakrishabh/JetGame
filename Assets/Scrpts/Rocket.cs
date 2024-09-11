@@ -25,15 +25,20 @@ public class Rocket : MonoBehaviour
         endpointroc = new Vector3(transform.position.x, starpointroc.y + 2.5f, transform.position.z);
     }
 
-    private void Update() {
+    private void Update() { 
 
-        if (GameManeger.instance.getInmotion()) {
-            multiplier += Time.deltaTime * multiplierRate;
-            mulitiplerText.text = multiplier.ToString("F2") + "x";
-            startingRoc(GameManeger.instance.getT());
+        if(GameManeger.instance.getInmotion()) {
+            gameObject.SetActive(true);
         }
+            if (GameManeger.instance.getInmotion()) {
+                multiplier += Time.deltaTime * multiplierRate;
+                mulitiplerText.text = multiplier.ToString("F2") + "x";
+                startingRoc(GameManeger.instance.getT());
+            }
+        
     }
     public void startingRoc(float t) {
+
         transform.position = new Vector3(
             transform.position.x,
             Mathf.Lerp(starpointroc.y, endpointroc.y, t),
@@ -42,9 +47,11 @@ public class Rocket : MonoBehaviour
     }
     public void crashJet() {
         gameObject.SetActive(false);
-        Debug.Log("Rocket is Crashed");
     }
     public float getMultiplier() {
         return multiplier;
+    }
+    public void resetMultiplier() {
+        multiplier = 1.00f; // Enable rocket for new session
     }
 }

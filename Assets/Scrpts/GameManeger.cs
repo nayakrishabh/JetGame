@@ -34,46 +34,67 @@ public class GameManeger : MonoBehaviour
             instance = this;
         }
         dusreKaGolapos = dusreKaGola.transform.position;
-        timerPanel.SetActive(true);
+        timerpanelActivity(true);
         getposdkg();
     }
     void Start()
     {
         selectMultiplier();
     }
-
-    // Update is called once per frame
     void Update()
     {
-        remainingTime -= Time.deltaTime;
+        roundTimer();
+
         int time = Mathf.FloorToInt(remainingTime);
-        timerText.text = string.Format("Round Starts in: \n{0}",time);
+        timerText.text = string.Format("Round Starts in: \n{0}", time);
+
         if (time <= 0) {
-            timerPanel.SetActive(false);
+            timerpanelActivity(false);
         }
-        if (time <= -1) {
+        if (time <= -2) {
             startSession();
         }
         endSession();
     }
     private void startSession() {
+        
         inSession = true;
         elapsedTime += Time.deltaTime;
         t = Mathf.Clamp(elapsedTime / lerpDuration, 0, 1);
         Scroller.Instance.scrollingLogic(uvpos);
+        inMotion = true;
         startingMotion(t);
     }
+      
     private void endSession() {
-        inSession = false;
+
         float multiplier = Mathf.Round(Rocket.instance.getMultiplier() * 100f) / 100f;
-        float tolerance = 0.01f;
-        if (Mathf.Abs(multiplier - selectedMultiplier) < tolerance) {
+
+        float tolerance = 0.05f;//Set Tolerence for float Point Percision
+
+        if (Mathf.Abs(multiplier - selectedMultiplier) < tolerance) { 
             Rocket.instance.crashJet();
-            startSession();
+            inMotion = false;
+            resetSession();
+            inSession = false;
         }
     }
+   
+    private void roundTimer() {
+        if (!inSession) {
+            timerpanelActivity(true);
+            remainingTime -= Time.deltaTime;
+        }
+    }
+    private void resetSession() {
+        remainingTime = 5f;
+        elapsedTime = 0f;
+        selectMultiplier();
+        Rocket.instance.resetMultiplier();
+        
+    }
     private void startingMotion(float t) {
-        inMotion = true;
+        Rocket.instance.gameObject.SetActive(true);
         dusreKaGola.transform.position = new Vector3(
             dusreKaGolapos.x,
             Mathf.Lerp(starpointdkg.y, endpointdkg.y, t),
@@ -95,5 +116,13 @@ public class GameManeger : MonoBehaviour
     }
     public bool getInmotion() {
         return inMotion;
+    }
+    private void timerpanelActivity(bool active) {
+        if (active) {
+            timerPanel.SetActive(true);
+        }
+        else if (!active) {
+            timerPanel.SetActive(false);
+        }
     }
 }
