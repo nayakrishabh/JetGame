@@ -20,7 +20,7 @@ public class GameManeger : MonoBehaviour
     private Vector2 uvpos = new Vector2(0f,0.2f);
 
     private float elapsedTime = 0f;
-    private float remainingTime = 5f;
+    private float remainingTime = 6f;
     private float t;
     private float selectedMultiplier;
 
@@ -37,26 +37,23 @@ public class GameManeger : MonoBehaviour
         timerpanelActivity(true);
         getposdkg();
     }
-    void Start()
-    {
+    void Start(){
+
         selectMultiplier();
     }
-    void Update()
-    {
-        roundTimer();
+    void Update() {
 
+        roundTimer();
         int time = Mathf.FloorToInt(remainingTime);
         timerText.text = $"Round Starts in: \n{time}";
 
         if (time <= 0) {
             timerpanelActivity(false);
         }
-
         if (time <= -1) {
             startSession();
         }
 
-        // Handle end of the session
         if (inSession) {
             endSession();
         }
@@ -92,11 +89,12 @@ public class GameManeger : MonoBehaviour
         }
     }
     private void resetSession() {
-        remainingTime = 5f;
+        remainingTime = 6f;
         elapsedTime = 0f;
         selectMultiplier();
         Rocket.instance.resetMultiplier();
-        
+        sessionCount++;
+        Debug.Log(sessionCount);
     }
     private void startingMotion(float t) {
         Rocket.instance.gameObject.SetActive(true);

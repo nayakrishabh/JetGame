@@ -47,6 +47,7 @@ public class Rocket : MonoBehaviour
     }
     public void crashJet() {
         gameObject.SetActive(false);
+        transform.position = starpointroc;
     }
     public float getMultiplier() {
         return multiplier;
