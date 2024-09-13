@@ -14,4 +14,10 @@ public class UIConnector : MonoBehaviour
     public Button button2x;
     public Button cashoutButton;
     public Button cashout50Button;
+    public Button betButton;
+
+    public enum UID {
+        ONE,
+        TWO
+    }
 }

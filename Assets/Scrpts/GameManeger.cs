@@ -23,7 +23,7 @@ public class GameManeger : MonoBehaviour
     private float remainingTime = 6f;
     private float t;
     private float selectedMultiplier;
-
+    private float balance = 100000;
     private int sessionCount = 0;
 
     private bool inMotion = false;
@@ -127,5 +127,12 @@ public class GameManeger : MonoBehaviour
         else if (!active) {
             timerPanel.SetActive(false);
         }
+    }
+
+    public float getBalance() {
+        return balance;
+    }
+    public void setBalance(float bl) {
+        balance += bl;
     }
 }
