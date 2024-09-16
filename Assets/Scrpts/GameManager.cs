@@ -4,9 +4,9 @@ using System.Security;
 using TMPro;
 using UnityEngine;
 
-public class GameManeger : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
-    public static GameManeger instance;
+    public static GameManager instance;
     [SerializeField] private GameObject rocket;
     [SerializeField] private GameObject dusreKaGola;
     [SerializeField] private GameObject timerPanel;
@@ -134,5 +134,9 @@ public class GameManeger : MonoBehaviour
     }
     public void setBalance(float bl) {
         balance += bl;
+    }
+
+    public bool getInSession() {
+        return inSession;
     }
 }

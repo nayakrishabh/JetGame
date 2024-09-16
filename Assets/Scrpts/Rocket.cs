@@ -27,13 +27,13 @@ public class Rocket : MonoBehaviour
 
     private void Update() { 
 
-        if(GameManeger.instance.getInmotion()) {
+        if(GameManager.instance.getInmotion()) {
             gameObject.SetActive(true);
         }
-            if (GameManeger.instance.getInmotion()) {
+            if (GameManager.instance.getInmotion()) {
                 multiplier += Time.deltaTime * multiplierRate;
                 mulitiplerText.text = multiplier.ToString("F2") + "x";
-                startingRoc(GameManeger.instance.getT());
+                startingRoc(GameManager.instance.getT());
             }
         
     }
