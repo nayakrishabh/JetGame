@@ -89,12 +89,12 @@ public class GameManager : MonoBehaviour
         }
     }
     private void resetSession() {
+        Rocket.instance.isCrashed = false;
         remainingTime = 6f;
         elapsedTime = 0f;
         selectMultiplier();
         Rocket.instance.resetMultiplier();
         sessionCount++;
-        Debug.Log(sessionCount);
     }
     private void startingMotion(float t) {
         Rocket.instance.gameObject.SetActive(true);

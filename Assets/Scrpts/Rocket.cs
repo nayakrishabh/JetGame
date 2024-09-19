@@ -16,6 +16,10 @@ public class Rocket : MonoBehaviour
     private Vector3 starpointroc;
     private Vector3 endpointroc;
     private Vector3 selfpos;
+
+    private bool _isCrashed;
+
+    public bool isCrashed { get { return _isCrashed; } set { if (value) { _isCrashed = true; } else { _isCrashed = false; } } }
     private void Awake() {
         
         if (instance == null) {
@@ -46,6 +50,7 @@ public class Rocket : MonoBehaviour
             );
     }
     public void crashJet() {
+        isCrashed = true;
         gameObject.SetActive(false);
         transform.position = starpointroc;
     }
@@ -54,5 +59,8 @@ public class Rocket : MonoBehaviour
     }
     public void resetMultiplier() {
         multiplier = 1.00f; // Enable rocket for new session
+    }
+    public bool getIsCrashed() {
+        return isCrashed;
     }
 }
