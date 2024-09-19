@@ -7,9 +7,6 @@ public class Scroller : MonoBehaviour
 {
     [SerializeField] private RawImage rawImage;
 
-
-    private float x = 0, y = 0.1f;
-
     public static Scroller Instance;
 
     private void Awake() {
@@ -18,7 +15,7 @@ public class Scroller : MonoBehaviour
         }
     }
 
-    void scrollingLogic(Vector2 uvpos) {
+    public void scrollingLogic(Vector2 uvpos) {
         rawImage.uvRect = new Rect(rawImage.uvRect.position + uvpos * Time.deltaTime, rawImage.uvRect.size);
     }
 }
