@@ -149,6 +149,17 @@ public class BettingSystem : MonoBehaviour {
     private void cashoutFun(UIConnector connector) {
 
     }
+    private void cashoutMulUPdate(UIConnector connector) {
+        if (!Rocket.instance.isCrashed) {
+            float multi = MathF.Round(Rocket.instance.getMultiplier() * 100f) / 100f;
+            if (gm.getInSession()) {
+                connector.CashoutText.text = $"Cashout\n{bets[connector] * multi}";
+            }
+        }
+        else if(Rocket.instance.isCrashed) {
+            StartCoroutine(GUIsetforOFFSession(connector));
+        }
+    }
     private void cashout50Fun(UIConnector connector) {
 
     }
@@ -221,14 +232,7 @@ public class BettingSystem : MonoBehaviour {
             GUIsetforONSession(connector);
         }
     }
-    private void cashoutMulUPdate(UIConnector connector) {
-        if (!gm.getInSession()) {
-            
-        }
-        else {
-            connector.CashoutText.text = $"Cashout\n{bets[connector] * Rocket.instance.getMultiplier()}";
-        }
-    }
+    
     private void addListener(UIConnector uiC) {
         uiC.minusButton.onClick.AddListener(() => SubtractBalance(uiC));
         uiC.plusButton.onClick.AddListener(() => AddBalance(uiC));
@@ -278,5 +282,11 @@ public class BettingSystem : MonoBehaviour {
         connector.cancelButton.gameObject.SetActive(false);
         connector.cashoutButton.gameObject.SetActive(true);
         connector.cashout50Button.gameObject.SetActive(true);
+    }
+    private IEnumerator GUIsetforOFFSession(UIConnector connector) {
+        yield return new WaitForSeconds(1f);
+        connector.betButton.gameObject.SetActive(true);
+        connector.cashoutButton.gameObject.SetActive(false);
+        connector.cashout50Button.gameObject.SetActive(false);
     }
 }
