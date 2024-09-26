@@ -18,8 +18,10 @@ public class Rocket : MonoBehaviour
     private Vector3 selfpos;
 
     private bool _isCrashed;
+    private bool _canCashout;
 
     public bool isCrashed { get { return _isCrashed; } set { if (value) { _isCrashed = true; } else { _isCrashed = false; } } }
+    public bool canCashout { get { return _canCashout; } set { if (value) { _canCashout = true; } else { _canCashout = false; } } }
     private void Awake() {
         
         if (instance == null) {
@@ -30,16 +32,13 @@ public class Rocket : MonoBehaviour
     }
 
     private void Update() { 
-
         if(GameManager.instance.getInmotion()) {
             gameObject.SetActive(true);
+            multiplier += Time.deltaTime * multiplierRate;
+            mulitiplerText.text = multiplier.ToString("F2") + "x";
+            canCashout = true;
+            startingRoc(GameManager.instance.getT());
         }
-            if (GameManager.instance.getInmotion()) {
-                multiplier += Time.deltaTime * multiplierRate;
-                mulitiplerText.text = multiplier.ToString("F2") + "x";
-                startingRoc(GameManager.instance.getT());
-            }
-        
     }
     public void startingRoc(float t) {
 
@@ -51,6 +50,7 @@ public class Rocket : MonoBehaviour
     }
     public void crashJet() {
         isCrashed = true;
+        canCashout = false;
         gameObject.SetActive(false);
         transform.position = starpointroc;
     }
