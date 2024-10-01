@@ -35,6 +35,11 @@ public class BettingSystem : MonoBehaviour {
         updateBetRounds(uiConnector2);
         cashoutMulUPdate(uiConnector1);
         cashoutMulUPdate(uiConnector2);
+        allowCashout(uiConnector1);
+        allowCashout(uiConnector2);
+        lossBet(uiConnector1);
+        lossBet(uiConnector2);
+
     }
 
     #region UPDATE BET AMOUNT
@@ -156,8 +161,15 @@ public class BettingSystem : MonoBehaviour {
                 connector.CashoutText.text = $"Cashout\n{bets[connector] * multi}";
             }
         }
-        else if(Rocket.instance.isCrashed) {
-            StartCoroutine(GUIsetforOFFSession(connector));
+    }
+    private void lossBet(UIConnector connector) {
+        if (!Rocket.instance.canCashout) {
+            GUIsetforOFFSession(connector);
+        }
+    }
+    private void allowCashout(UIConnector connector) {
+        if (Rocket.instance.canCashout) {
+            GUIsetforONSession(connector);
         }
     }
     private void cashout50Fun(UIConnector connector) {
@@ -175,9 +187,6 @@ public class BettingSystem : MonoBehaviour {
             bets[connector] = betAmount2;
         }
         GUIsetforAppliedbet(connector);
-    }
-    public void betComplete() {
-
     }
     private void onCanceled(UIConnector connector) {
         if (connector.getuid() == UIConnector.UID.ONE) {
@@ -229,7 +238,6 @@ public class BettingSystem : MonoBehaviour {
         }
         else {
             connector.betText.text = "BET for Next Round";
-            GUIsetforONSession(connector);
         }
     }
     
@@ -254,6 +262,22 @@ public class BettingSystem : MonoBehaviour {
         uiC.autoBetNo.onEndEdit.AddListener(delegate { ValidateInputBetNo(uiC); });
 
     }
+    private void AllGUIOn(UIConnector connector) {
+        connector.plusButton.interactable = true;
+        connector.minusButton.interactable = true;
+        connector.betAmount.interactable = true;
+        connector.autoCashout.interactable = true;
+        connector.autoBet.interactable = true;
+        connector.button2x.interactable = true;
+        connector.autoBetNo.interactable = true;
+        connector.autoCashOutMUL.interactable = true;
+        connector.betButton.gameObject.SetActive(true);
+
+
+        connector.cashoutButton.gameObject.SetActive(false);
+        connector.cashout50Button.gameObject.SetActive(false);
+        connector.cancelButton.gameObject.SetActive(false);
+    }
     private void GUIsetforAppliedbet(UIConnector connector) {
         connector.plusButton.interactable = false;
         connector.minusButton.interactable = false;
@@ -264,6 +288,8 @@ public class BettingSystem : MonoBehaviour {
         connector.autoBetNo.interactable = false;
         connector.autoCashOutMUL.interactable = false;
         connector.betButton.gameObject.SetActive(false);
+        connector.cashoutButton.gameObject.SetActive(false);
+        connector.cashout50Button.gameObject.SetActive(false);
         connector.cancelButton.gameObject.SetActive(true);
     }
     private void GUIsetforCanceledBet(UIConnector connector) {
@@ -275,17 +301,37 @@ public class BettingSystem : MonoBehaviour {
         connector.button2x.interactable = true;
         connector.autoBetNo.interactable = true;
         connector.autoCashOutMUL.interactable = true;
-        connector.cancelButton.gameObject.SetActive(false);
         connector.betButton.gameObject.SetActive(true);
+        connector.cancelButton.gameObject.SetActive(false);
+        connector.cashoutButton.gameObject.SetActive(false);
+        connector.cashout50Button.gameObject.SetActive(false);
     }
     private void GUIsetforONSession(UIConnector connector) {
+        connector.plusButton.interactable = false;
+        connector.minusButton.interactable = false;
+        connector.betAmount.interactable = false;
+        connector.autoCashout.interactable = false;
+        connector.autoBet.interactable = false;
+        connector.button2x.interactable = false;
+        connector.autoBetNo.interactable = false;
+        connector.autoCashOutMUL.interactable = false;
         connector.cancelButton.gameObject.SetActive(false);
+        connector.betButton.gameObject.SetActive(false);
+
         connector.cashoutButton.gameObject.SetActive(true);
         connector.cashout50Button.gameObject.SetActive(true);
     }
-    private IEnumerator GUIsetforOFFSession(UIConnector connector) {
-        yield return new WaitForSeconds(1f);
+    private void GUIsetforOFFSession(UIConnector connector) {
+        connector.plusButton.interactable = true;
+        connector.minusButton.interactable = true;
+        connector.betAmount.interactable = true;
+        connector.autoCashout.interactable = true;
+        connector.autoBet.interactable = true;
+        connector.button2x.interactable = true;
+        connector.autoBetNo.interactable = true;
+        connector.autoCashOutMUL.interactable = true;
         connector.betButton.gameObject.SetActive(true);
+
         connector.cashoutButton.gameObject.SetActive(false);
         connector.cashout50Button.gameObject.SetActive(false);
     }
